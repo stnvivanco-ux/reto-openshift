@@ -25,7 +25,7 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/cursosv2
           tags: |
-            type=raw,value=build-${{ github.run_number }}
+            type=raw,value=latest
 
       - name: Build Docker image
         uses: docker/build-push-action@v5
@@ -63,5 +63,4 @@ jobs:
 
       - name: Deploy with Helm
         run: |
-          helm upgrade --install mi-release ./charts \
-            --namespace ${{ secrets.OPENSHIFT_NAMESPACE }}
+          helm upgrade --install microservicio-1 oci://registry-1.docker.io/savivancofi/mi-chart --version 0.1.0 --values charts/values.yaml
