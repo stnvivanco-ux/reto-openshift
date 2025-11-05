@@ -1,0 +1,32 @@
+name: reto-open
+
+# Kubernetes namespace to install into (can be overridden
+namespace: stnvivanco92-dev
+
+frontend:
+  image: "savivancofi/cursosv2"
+  replicas: 1
+  containerPort: 3000
+
+backendApi:
+  image: "savivancofi/cursosv2"
+  replicas: 1
+  containerPort: 8080
+
+backendData:
+  image: "savivancofi/cursosv2"
+  replicas: 1
+  containerPort: 8081
+
+database:
+  image: "postgres:16"
+  containerPort: 5432
+  storageSize: 1Gi
+  dbName: retobdd
+  dbUser: retobdd_user
+  dbPassword: retobdd_user
+
+urls:
+  backendApi: "http://backend-api-svc:8080"
+  backendData: "http://backend-data-svc:8081"
+  databaseHost: "db-svc"
