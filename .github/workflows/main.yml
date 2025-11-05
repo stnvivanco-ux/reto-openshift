@@ -37,4 +37,4 @@ jobs:
       
       - name: Deploy with Helm
         run: |
-          helm upgrade --install microservicio-1 oci://registry-1.docker.io/savivancofi/mi-chart --version 0.1.0 --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} --values charts/values.yaml
+          helm upgrade --install microservicio-1 ./charts --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} --values charts/values.yaml
