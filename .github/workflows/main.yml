@@ -31,6 +31,14 @@ jobs:
             --insecure-skip-tls-verify=true
           oc project ${{ secrets.OPENSHIFT_NAMESPACE }}
 
+      #- name: Deploy with Helm
+       # run: |
+        #  helm upgrade --install microservicio-1 oci://registry-1.docker.io/savivancofi/mi-chart --version 0.1.0 --values charts/values.yaml
+      
       - name: Deploy with Helm
         run: |
-          helm upgrade --install microservicio-1 oci://registry-1.docker.io/savivancofi/mi-chart --version 0.1.0 --values charts/values.yaml
+          helm upgrade --install microservicio-1 \
+            oci://registry-1.docker.io/savivancofi/mi-chart \
+            --version 0.1.0 \
+            --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} \
+            --values charts/values.yaml
