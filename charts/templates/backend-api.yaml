@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-api-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: reto-open
+    role: backend-api
+spec:
+  replicas: {{ .Values.backendApi.replicas }}
+  selector:
+    matchLabels:
+      app: reto-open
+      role: backend-api
+  template:
+    metadata:
+      labels:
+        app: reto-open
+        role: backend-api
+    spec:
+      containers:
+        - name: backend-api
+          image: "{{ .Values.backendApi.image }}:{{ .Values.backendApi.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.backendApi.containerPort }}
+          env:
+            - name: ROLE
+              value: "backend-api"
+            - name: BACKEND_DATA_URL
+              value: {{ .Values.urls.backendData | quote }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-api-svc
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: reto-open
+    role: backend-api
+spec:
+  selector:
+    app: reto-open
+    role: backend-api
+  ports:
+    - name: http
+      port: 8080
+      targetPort: {{ .Values.backendApi.containerPort }}
+  type: ClusterIP
