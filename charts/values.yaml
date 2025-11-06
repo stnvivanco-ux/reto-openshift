@@ -3,7 +3,7 @@ namespace: stnvivanco92-dev
 
 frontend:
   image: "savivancofi/frontend"
-  tag: "v1"                 # cuando subas la imagen al Docker Hub, usas aquí la tag real
+  tag: "v2"                 # cuando subas la imagen al Docker Hub, usas aquí la tag real
   replicas: 1
   containerPort: 3000       # tu contenedor de frontend debe escuchar en este puerto
 
