@@ -1,20 +1,18 @@
 name: reto-open
-
-# Kubernetes namespace to install into (can be overridden
 namespace: stnvivanco92-dev
 
 frontend:
-  image: "savivancofi/cursosv2:build-10"
+  image: "savivancofi/frontend:latest"      # luego actualizas la tag
   replicas: 1
   containerPort: 3000
 
 backendApi:
-  image: "savivancofi/cursosv2:build-10"
+  image: "savivancofi/backend-api:latest"
   replicas: 1
   containerPort: 8080
 
 backendData:
-  image: "savivancofi/cursosv2:build-10"
+  image: "savivancofi/backend-data:latest"
   replicas: 1
   containerPort: 8081
 

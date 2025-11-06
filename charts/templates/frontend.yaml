@@ -24,6 +24,12 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.frontend.containerPort }}
+          env:
+            - name: ROLE
+              value: "frontend"
+            - name: BACKEND_API_URL
+              value: {{ .Values.urls.backendApi | quote }}
+
 ---
 apiVersion: v1
 kind: Service
@@ -42,3 +48,22 @@ spec:
       port: 80
       targetPort: {{ .Values.frontend.containerPort }}
   type: ClusterIP
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: frontend-route
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: reto-open
+    role: frontend
+spec:
+  to:
+    kind: Service
+    name: frontend-svc
+    weight: 100
+  port:
+    targetPort: http
+  path: /
+  wildcardPolicy: None
