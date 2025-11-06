@@ -37,4 +37,4 @@ jobs:
       
       - name: Deploy with Helm
         run: |
-          helm upgrade --install microservicio-1 ./charts --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} --values charts/values.yaml
+          helm upgrade --install reto-open ./charts --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} --values charts/values.yaml
