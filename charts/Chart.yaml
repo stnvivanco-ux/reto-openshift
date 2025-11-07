@@ -1,6 +1,6 @@
 apiVersion: v2
 name: mi-chart
-description: Chart genérico para desplegar microservicios (frontend, backend-api, etc.)
+description: Chart genÃ©rico para desplegar microservicios (frontend, backend-api, etc.)
 type: application
 version: 0.1.0
 appVersion: "1.0"
