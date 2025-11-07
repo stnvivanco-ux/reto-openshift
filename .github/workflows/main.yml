@@ -18,7 +18,7 @@ jobs:
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
           helm version
 
-      - name: Show chart structure (debug opcional)
+      - name: Show chart structure (debug)
         run: |
           ls -R
 
@@ -29,14 +29,13 @@ jobs:
           helm package .
           ls -l
 
-      - name: Login to Docker Hub (OCI Registry)
+      - name: Login to Docker Hub
         run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | helm registry login registry-1.docker.io \
-            --username "${{ secrets.DOCKERHUB_USERNAME }}" \
+          echo -n "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" \
             --password-stdin
 
       - name: Push chart to Docker Hub
         run: |
           cd charts
-          # Ajusta la versión si cambias 'version' en Chart.yaml
           helm push mi-chart-0.1.0.tgz oci://registry-1.docker.io/savivancofi
