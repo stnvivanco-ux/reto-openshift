@@ -1,34 +1,13 @@
-name: reto-open
-namespace: stnvivanco92-dev
-
-frontend:
-  image: "savivancofi/frontend"
-  tag: "v2"                 # cuando subas la imagen al Docker Hub, usas aquí la tag real
+app:
+  name: dummy
+  role: dummy
+  image: nginx
+  tag: latest
   replicas: 1
-  containerPort: 3000       # tu contenedor de frontend debe escuchar en este puerto
+  containerPort: 80
+  servicePort: 80
+  createRoute: false
 
-backendApi:
-  image: "savivancofi/backend-api"
-  tag: "v1"
-  replicas: 1
-  containerPort: 8080
-
-backendData:
-  image: "savivancofi/backend-data"
-  tag: "v1"
-  replicas: 1
-  containerPort: 8081
-
-database:
-  image: "postgres"
-  tag: "16"
-  containerPort: 5432
-  storageSize: 1Gi
-  dbName: retobdd
-  dbUser: retobdd_user
-  dbPassword: retobdd_user
-
-urls:
-  backendApi: "http://backend-api-svc:8080"
-  backendData: "http://backend-data-svc:8081"
-  databaseHost: "db-svc"
+env:
+  - name: TEST
+    value: "ok"

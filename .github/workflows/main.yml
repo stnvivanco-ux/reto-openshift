@@ -1,40 +1,42 @@
-name: CI-DockerBuild
+name: Publish-Helm-Chart
 
-on: 
+on:
   push:
     branches: ["main"]
   workflow_dispatch:
 
 jobs:
-  deploy:
+  publish-chart:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install OC CLI
-        run: |
-          curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz -o oc.tar.gz
-          tar -xzf oc.tar.gz
-          sudo mv oc /usr/local/bin/oc
-          oc version
-
       - name: Install Helm
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          helm version
 
-      - name: Log in to OpenShift
+      - name: Show chart structure (debug opcional)
         run: |
-          oc login ${{ secrets.OPENSHIFT_SERVER }} \
-            --token=${{ secrets.OPENSHIFT_TOKEN }} \
-            --insecure-skip-tls-verify=true
-          oc project ${{ secrets.OPENSHIFT_NAMESPACE }}
+          ls -R
 
-      #- name: Deploy with Helm
-       # run: |
-        #  helm upgrade --install microservicio-1 oci://registry-1.docker.io/savivancofi/mi-chart --version 0.1.0 --values charts/values.yaml
-      
-      - name: Deploy with Helm
+      - name: Package Helm chart
         run: |
-          helm upgrade --install reto-open ./charts --namespace ${{ secrets.OPENSHIFT_NAMESPACE }} --values charts/values.yaml
+          cd charts
+          helm lint .
+          helm package .
+          ls -l
+
+      - name: Login to Docker Hub (OCI Registry)
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | helm registry login registry-1.docker.io \
+            --username "${{ secrets.DOCKERHUB_USERNAME }}" \
+            --password-stdin
+
+      - name: Push chart to Docker Hub
+        run: |
+          cd charts
+          # Ajusta la versión si cambias 'version' en Chart.yaml
+          helm push mi-chart-0.1.0.tgz oci://registry-1.docker.io/savivancofi
