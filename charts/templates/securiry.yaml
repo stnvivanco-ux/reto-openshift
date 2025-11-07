@@ -1,16 +1,16 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-micro-a-to-micro-b-ingress-frontend
+  name: allow-micro-a-to-micro-b-ingress-{{ .Values.app.role }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: reto-open
-    role: frontend
+    app: {{ .Values.app.name }}
+    role: {{ .Values.app.role }}
 spec:
   podSelector:
     matchLabels:
-      app: reto-open
-      role: frontend
+      app: {{ .Values.app.name }}
+      role: {{ .Values.app.role }}
   policyTypes:
     - Ingress
   ingress:
@@ -20,4 +20,4 @@ spec:
               network.openshift.io/policy-group: ingress
       ports:
         - protocol: TCP
-          port: {{ .Values.frontend.containerPort }}
+          port: {{ .Values.app.containerPort }}
