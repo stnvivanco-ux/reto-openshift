@@ -14,7 +14,6 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # 1️⃣ Permitir tráfico desde el router (como antes)
     - from:
         - namespaceSelector:
             matchLabels:
@@ -23,9 +22,9 @@ spec:
         - protocol: TCP
           port: {{ .Values.app.containerPort }}
 
-    # 2️⃣ Permitir tráfico desde cualquier pod del mismo namespace
     - from:
         - podSelector: {}   # cualquier pod del namespace
       ports:
         - protocol: TCP
+
           port: {{ .Values.app.containerPort }}
